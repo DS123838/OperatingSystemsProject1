@@ -53,7 +53,10 @@ int main(int argc, char *argv[]) {
         if (pid == 0) {
             // third child process, run uniq
             printf("The third child process running wc -l is %d\n", getpid());
-            //// 
+            dup2(fd2[0], STDIN_FILENO);
+            close(fd2[1]);
+            close(fd1[0]);
+            close(fd1[1]);
             execlp("/usr/bin/wc", "wc", "-l", NULL);
             printf("Should not be here after execlp to wc\n");
         }
